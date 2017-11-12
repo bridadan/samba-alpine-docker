@@ -9,7 +9,7 @@ RUN apk update && apk upgrade
 RUN apk add samba samba-common-tools supervisor && rm -rf /var/cache/apk/*
 
 # create a dir for the config and the share
-RUN mkdir /config /shared
+RUN mkdir /config /bulk /redundant
 
 # copy config files from project folder to get a default config going for samba and supervisord
 COPY *.conf /config/
@@ -21,7 +21,7 @@ RUN addgroup -g 1000 rio && adduser -D -H -G rio -s /bin/false -u 1000 rio
 RUN echo -e "letsdance\nletsdance" | smbpasswd -a -s -c /config/smb.conf rio
 
 # volume mappings
-VOLUME /config /shared
+VOLUME /config /bulk /redundant
 
 # exposes samba's default ports (137, 138 for nmbd and 139, 445 for smbd)
 EXPOSE 137/udp 138/udp 139 445
